@@ -8,15 +8,14 @@ r = img[:, :, 2] / 255
 g = img[:, :, 1] / 255
 b = img[:, :, 0] / 255
 
-Max = r.copy()
-Min = r.copy()
+Max = np.zeros_like(r)
+Min = np.zeros_like(r)
 for i in range(len(Max)):
-    Max[i] = np.maximum(r[i], g[i], b[i])
-    Min[i] = np.minimum(r[i], g[i], b[i])
-#Max = np.maximum(r, g, b)
-#Min = np.minimum(r, g, b)
+    for j in range(len(Max[i])):
+        Max[i][j] = max(r[i][j], g[i][j], b[i][j])
+        Min[i][j] = min(r[i][j], g[i][j], b[i][j])
 
-h = r.copy()
+h = np.zeros_like(r)
 for i in range(len(h)):
     for j in range(len(h[i])):
         if Max[i][j] == Min[i][j]:
@@ -31,23 +30,17 @@ for i in range(len(h)):
 v = Max.copy()
 s = Max.copy() - Min.copy()
 
-#h = (h + 180) % 360
-h += 180
+h = (h + 180) % 360
 
-c = s.copy()
-#c = v * s
+c = s
 h_ = h / 60
 x = c * (1 - np.fabs(h_ % 2 - 1))
 
 for i in range(len(img)):
     for j in range(len(img[i])):
         tmp = (v[i][j] - c[i][j]) * np.array([1, 1, 1])
-        print(v[i][j])
-        print(c[i][j])
-        print(v[i][j]-c[i][j])
-        print(tmp)
-        if h[i][j] == None:
-            pass
+        if s[i][j] == 0:
+            tmp += np.array([0, 0, 0])
         if 0 <= h_[i][j] and h_[i][j] < 1:
             tmp += np.array([c[i][j], x[i][j], 0])
         elif h_[i][j] < 2:
@@ -58,9 +51,8 @@ for i in range(len(img)):
             tmp += np.array([0, x[i][j], c[i][j]])
         elif h_[i][j] < 5:
             tmp += np.array([x[i][j], 0, c[i][j]])
-        else:
+        elif h_[i][j] < 6:
             tmp += np.array([c[i][j], 0, x[i][j]])
-        #print(tmp)
 
         img[i,j,2] = tmp[0]
         img[i,j,1] = tmp[1]
@@ -69,4 +61,3 @@ for i in range(len(img)):
 img = img * 255
 img = img.astype(np.uint8)
 cv2.imwrite("my_answer_05.jpg", img)
-
