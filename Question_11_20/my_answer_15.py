@@ -31,6 +31,5 @@ out_v[out_v > 255] = 255
 out_h[out_h < 0] = 0
 out_h[out_h > 255] = 255
 
-cv2.imwrite("my_answer_15_g.jpg", tmp.astype(np.uint8))
 cv2.imwrite("my_answer_15_v.jpg", out_v.astype(np.uint8))
 cv2.imwrite("my_answer_15_h.jpg", out_h.astype(np.uint8))
