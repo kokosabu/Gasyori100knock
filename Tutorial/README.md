@@ -1,4 +1,7 @@
-# Tutorial
+# Tutorial -Python-
+
+C++でやりたい人はこっち〜〜 
+>> https://github.com/yoyoyo-yo/Gasyori100knock/blob/master/Tutorial/README_opencv_c_install.md
 
 ここでは画像処理におけるnumpyの基本的な使い方をいくつか紹介していきます。
 
@@ -13,6 +16,73 @@ pythonでのOpenCVはnumpyをベースとしているため、numpyがいじれ�
 
 ここからはpyファイルでなく、インタプリタ形式でやってみて下さい。
 
+## 環境設定
+
+Python-3.6でやって下さい。(解答はPython-3.6で用意してます)
+
+### 1. Minicondaのインストール
+
+https://conda.io/miniconda.html のサイトからMinicondaをインストールします。これはWindowでもMacOSでも可能です。Minicondaがインストールできたら、端末(Windowでは端末、MacOSではターミナル)を開き、以下コマンドで仮想環境を作成します。
+
+```bash
+$ conda create python=3.6 -n gasyori100
+```
+
+作成できたら、以下コマンドで仮想環境を動作します。
+
+```bash
+$ source activate gasyori100
+```
+
+するとこうなります。
+
+```bash
+(gasyori100) :~/work_space/Gasyori100knock/ :$ 
+```
+
+### 2. パッケージのインストール
+
+以下のコマンドで必要なパッケージをインストールします。
+
+```bash
+$ pip install numpy matplotlib opencv-python
+```
+
+もしくはホームディレクトリにある*requirements.txt*を使ってこうしてもインストールできます。
+
+```bash
+$ pip install -r requirements.txt
+```
+
+### 3. 画像処理チュートリアル
+
+以下のファイルを作成し sample.py という名前で保存し、実行します。
+
+```python
+import cv2
+
+img = cv2.imread("assets/imori.jpg")
+cv2.imshow("imori", img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+```
+
+```bash
+$ python sample.py
+```
+
+これで以下の画像が表示されれば成功です！
+何かボタンを押せば消えます。
+
+![](assets/sample.png)
+
+もし上記の設定ができなかったという人はこちらが参考になると思います。
+Google colaboratory というウェブブラウザ上でpythonが実行できる超便利ツールです！
+
+>> [画像処理100本ノックを「Google Colaboratory」で楽々学習](https://qiita.com/karaage0703/items/e0b57b63dbebed908b2f)
+
+
+次に画像処理に関するnumpyの扱い方を説明していきます。（もう知ってるという人はスキップして問題に進んで下さい！）
 
 ## Python起動
 
@@ -79,9 +149,7 @@ cv2.waitKey(0)はキーボードから何かが入力されるまで画像を表
 >>> 
 ```
 
-|表示 (sample1.png)|
-|:---:|
-|![](sample1.png)|
+![](assets/sample1.png)
 
 
 例えば、imgの型をfloat32にしてみます。
@@ -108,9 +176,8 @@ cv2.waitKey(0)はキーボードから何かが入力されるまで画像を表
 102
 >>>
 ```
-|表示 (sample2.png)|
-|:---:|
-|![](sample2.png)|
+
+![](assets/sample2.png)
 
 ## 画素をいじる。
 
@@ -161,9 +228,7 @@ copy()については次で説明します。
 >>>
 ```
 
-|表示 (sample3.png)|
-|:---:|
-|![](sample3.png)|
+![](assets/sample3.png)
 
 
 次に先程の　4. **画素が0未満のものは0, 255を超えたものは255に直す。**　に関して説明します。
@@ -182,9 +247,7 @@ uint8型は[0, 255] の範囲しか取り得ないので、これをuint8型に�
 >>> cv2.imshow("imori", img2.astype(np.uint8)); cv2.waitKey(0)
 ```
 
-|表示 (sample5.png)|
-|:---:|
-|![](sample5.png)|
+![](assets/sample5.png)
 
 ## 画像のコピー
 
@@ -215,6 +278,8 @@ True
 
 画像の左半分上のRとBを入れ替えて表示してみましょう。
 
+![](assets/out_practice.jpg)
+
 回答例
  
 ```bash
@@ -227,10 +292,6 @@ True
 102
 >>> 
 ```
-
-|表示 (sample4.png)|
-|:---:|
-|![](sample4.png)|
 
 以上でチュートリアルは終了です。
 
