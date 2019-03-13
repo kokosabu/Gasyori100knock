@@ -14,7 +14,7 @@ def inv_dft(img, N):
     for y in range(N):
         for x in range(N):
             W[y, x] = np.exp(2j * np.pi * y * x / N)
-    return np.matmul(np.matmul(W, img), W)
+    return np.matmul(np.matmul(W, img), W) / (N*N)
 
 img = cv2.imread("imori.jpg").astype(np.float)
 H, W, C = img.shape
@@ -26,7 +26,7 @@ out = np.zeros((H, W, C), dtype=np.float)
 out = dft(gray, H)
 out2 = inv_dft(out, H)
 out = (np.abs(out) / np.abs(out).max() * 255).astype(np.uint8)
-out2 = (np.abs(out2) / np.abs(out2).max() * 255).astype(np.uint8)
+out2 = np.abs(out2)
 
 out[out < 0] = 0
 out[out > 255] = 255
