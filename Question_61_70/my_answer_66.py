@@ -12,7 +12,9 @@ gx[gx == 0] = 0.000001
 gy = gray2[2:H+2, 1:W+1] - gray2[0:H, 2:W+2]
 
 mag = np.sqrt(gx ** 2 + gy ** 2)
-ang = np.arctan(gy / gx) * (180/np.pi) + 90
+ang = np.arctan(gy / gx) * (180/np.pi)
+ang[ang < 0] += 360
+ang[ang > 180] -= 180
 
 for i in range(9):
     ang[np.where((ang >= i*20) & (ang < (i+1)*20), True, False)] = i
