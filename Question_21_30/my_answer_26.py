@@ -23,10 +23,10 @@ for y in range(Ha):
         dx = xa - int(xa)
         dy = ya - int(ya)
 
-        out[y, x] = (1-dx)*(1-dy)*in_[int(y/a)+pad, int(x/a)+pad] + \
-                        dx*(1-dy)*in_[int(y/a)+pad, int(x/a)+1+pad] + \
-                    (1-dx)*    dy*in_[int(y/a)+1+pad, int(x/a)+pad] + \
-                        dx*    dy*in_[int(y/a)+pad, int(x/a)+pad]
+        out[y, x] = (1-dx)*(1-dy)*in_[int(y/a)+pad,   int(x/a)+pad  ] + \
+                        dx*(1-dy)*in_[int(y/a)+pad,   int(x/a)+1+pad] + \
+                    (1-dx)*    dy*in_[int(y/a)+1+pad, int(x/a)+pad  ] + \
+                        dx*    dy*in_[int(y/a)+1+pad, int(x/a)+1+pad]
 
 out[out < 0] = 0
 out[out > 255] = 255
