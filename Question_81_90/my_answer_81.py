@@ -22,15 +22,25 @@ Ix = gray.copy()
 Iy = gray.copy()
 for y in range(H):
     for x in range(W):
-        #Iy[y, x] = np.sum(Ky * tmp[y:y+K_size, x:x+K_size])
-        #Ix[y, x] = np.sum(Kx * tmp[y:y+K_size, x:x+K_size])
         Iy[y, x] = np.mean(Ky * tmp[y:y+K_size, x:x+K_size])
         Ix[y, x] = np.mean(Kx * tmp[y:y+K_size, x:x+K_size])
 
+tmpx = np.zeros((H+pad*2, W+pad*2), dtype=np.float)
+tmpy = np.zeros((H+pad*2, W+pad*2), dtype=np.float)
+tmpx[pad:pad+H, pad:pad+W] = Ix
+tmpy[pad:pad+H, pad:pad+W] = Iy
+Ixx = gray.copy()
+Iyy = gray.copy()
+Ixy = gray.copy()
+for y in range(H):
+    for x in range(W):
+        Iyy[y, x] = np.mean(Ky * tmpy[y:y+K_size, x:x+K_size])
+        Ixx[y, x] = np.mean(Kx * tmpx[y:y+K_size, x:x+K_size])
+        Ixy[y, x] = np.mean(Kx * tmpy[y:y+K_size, x:x+K_size])
+
 IxIx = Ix**2
 IyIy = Iy**2
-IxIy = Ix*Iy
-detH = IxIx*IyIy - IxIy**2
+detH = Ixx*Iyy - Ixy**2
 
 K = detH / (1 + IxIx + IyIy)**2
 
