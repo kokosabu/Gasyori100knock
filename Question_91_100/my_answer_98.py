@@ -169,22 +169,28 @@ H, W, C = img.shape
 gray = 0.2126*img[...,2] + 0.7152*img[...,1] + 0.0722*img[...,0]
 
 recs = np.array(((42, 42), (56, 56), (70, 70)), dtype=np.int)
-detect = []
-for y in range(0, H-42, 4):
-    for x in range(0, W-42, 4):
-        for r in range(len(recs)):
-            crop = gray[y:np.min((y+recs[r][0], H)), x:np.min((x+recs[r][1], W))]
+detects = np.ndarray((0, 5), dtype=np.float32)
+for y in range(0, H, 4):
+    for x in range(0, W, 4):
+        for rec in recs:
+            dh = int(rec[0] // 2)
+            dw = int(rec[1] // 2)
+            x1 = max(x-dw, 0)
+            x2 = min(x+dw, W)
+            y1 = max(y-dh, 0)
+            y2 = min(y+dh, H)
+            crop = gray[y1:y2, x1:x2]
             ch, cw = crop.shape
             resize = bi_linear(crop, rS/ch, rS/cw)
             feature = hog(resize)
             p = nn.forward(feature)
             if p >= 0.7:
-                detect.append([x, y, np.min((x+recs[r][1], W)), np.min((y+recs[r][0], H)), p[0]])
+                detects = np.vstack((detects, np.array((x1, y1, x2, y2, p[0]))))
 
-print(detect)
-d = detect
+print(detects)
+d = detects
 out = img.copy()
-for i in range(len(detect)):
+for i in range(len(d)):
     out = cv2.rectangle(out, (int(d[i][0]), int(d[i][1])), (int(d[i][2]), int(d[i][3])), (0, 0, 255), 1)
 
 cv2.imwrite("my_answer_98.jpg", out.astype(np.uint8))
